@@ -44,9 +44,9 @@ def check_greater_than_zero(*args, **kwargs):
     table = kwargs["params"]["table"]
     redshift_hook = PostgresHook("redshift")
     records = redshift_hook.get_records(f"SELECT COUNT(*) FROM {table}")
-    if len(records) < 1 or len(records[0]) < 1:
-        raise ValueError(f"Data quality check failed. {table} returned no results")
-    num_records = records[0][0]
+#     if len(records) < 1 or len(records[0]) < 1:
+#         raise ValueError(f"Data quality check failed. {table} returned no results")
+#     num_records = records[0][0]
 
     #
     # TODO: Add a check here to verify that at least one record was found
