@@ -69,8 +69,12 @@ copy_trips_task = S3ToRedshiftOperator(
 # TODO: Replace this data quality check with the HasRowsOperator
 #
 check_trips = HasRowsOperator(
+    task_id="check_trips_data",
+    dag=dag,
     redshift_conn_id="redshift",
     table="trips",
+    
+    
 )
 create_stations_table = PostgresOperator(
     task_id="create_stations_table",
@@ -93,6 +97,8 @@ copy_stations_task = S3ToRedshiftOperator(
 # TODO: Replace this data quality check with the HasRowsOperator
 #
 check_stations = HasRowsOperator(
+    task_id="check_stations_data",
+    dag=dag,
     redshift_conn_id='redshift',
     table='stations',
 )
