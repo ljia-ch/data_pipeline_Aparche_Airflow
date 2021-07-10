@@ -4,7 +4,7 @@ from airflow.hooks.postgres_hook import PostgresHook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
-
+# Define operator plug-ins
 class FactsCalculatorOperator(BaseOperator):
     facts_sql_template = """
     DROP TABLE IF EXISTS {destination_table};
