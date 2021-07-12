@@ -38,7 +38,12 @@ copy_trips_task = S3ToRedshiftOperator(
 #
 # TODO: Perform a data quality check on the Trips table
 #
-check_trips = HasRowsOperator(...)
+check_trips = HasRowsOperator(
+    task_id = "check_trips_data",
+    dag=dag,
+    table="trips",
+    redshift_conn_id="redshift"
+)
 
 #
 # TODO: Use the FactsCalculatorOperator to create a Facts table in RedShift. The fact column should
