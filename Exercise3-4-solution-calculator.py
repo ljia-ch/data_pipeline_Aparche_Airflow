@@ -6,6 +6,7 @@ from airflow.utils.decorators import apply_defaults
 
 # Define operator plug-ins
 class FactsCalculatorOperator(BaseOperator):
+    
     facts_sql_template = """
     DROP TABLE IF EXISTS {destination_table};
     CREATE TABLE {destination_table} AS
@@ -28,6 +29,8 @@ class FactsCalculatorOperator(BaseOperator):
                  *args, **kwargs):
 
         super(FactsCalculatorOperator, self).__init__(*args, **kwargs)
+        
+        # set attributes from __init__ instantiation arguments
         self.redshift_conn_id = redshift_conn_id
         self.origin_table = origin_table
         self.destination_table = destination_table
@@ -35,7 +38,10 @@ class FactsCalculatorOperator(BaseOperator):
         self.groupby_column = groupby_column
 
     def execute(self, context):
+        # fetch redshift hook
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
+        
+        # format facts table query and run again redshift hook
         facts_sql = FactsCalculatorOperator.facts_sql_template.format(
             origin_table=self.origin_table,
             destination_table=self.destination_table,
