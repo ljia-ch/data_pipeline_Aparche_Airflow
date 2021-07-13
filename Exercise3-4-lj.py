@@ -49,8 +49,19 @@ check_trips = HasRowsOperator(
 # TODO: Use the FactsCalculatorOperator to create a Facts table in RedShift. The fact column should
 #       be `tripduration` and the groupby_column should be `bikeid`
 #
-#calculate_facts = FactsCalculatorOperator(...)
+calculate_facts = FactsCalculatorOperator(
+    task_id = "create_facts_trips",
+    dag = dag,
+    redshift_conn_id = "redshift",
+    aws_credentials = "aws_credentials",
+    origin_table = "trips",
+    destination_table = "trips_facts",
+    groupby_column = "bikeid",
+    fact_column = "tripduration"
+)
 
 #
 # TODO: Define task ordering for the DAG tasks you defined
 #
+copy_trips_task >> check_trips
+check_trips >> calculate_facts
